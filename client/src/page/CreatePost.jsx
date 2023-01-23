@@ -29,19 +29,20 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch(
-          "https://aigallery.onrender.com/api/v1/dalle",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ prompt: form.prompt }),
-          }
-        );
+        const response = await fetch("http://localhost:8080/generateImage", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt: form.prompt }),
+        });
         const data = await response.json();
-        console.log(data, form.prompt);
-        setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
+
+        console.log(data);
+        setForm({
+          ...form,
+          photo: data.data[0].url,
+        });
       } catch (err) {
         alert(err);
       } finally {
@@ -58,13 +59,16 @@ const CreatePost = () => {
     if (form.prompt && form.photo) {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:8080/api/v1/post", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ...form }),
-        });
+        const response = await fetch(
+          "https://aigallery.onrender.com/api/v1/post",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ...form }),
+          }
+        );
 
         await response.json();
         alert("Success");
@@ -78,7 +82,29 @@ const CreatePost = () => {
       alert("Please generate an image with proper details");
     }
   };
-
+  const handleVariation = async () => {
+    console.log(form.variation);
+    try {
+      setGeneratingImg(true);
+      const response = await fetch(
+        "http://localhost:8080/generateImage/variation",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: form.photo }),
+        }
+      );
+      const data = await response.json();
+      console.log(data.data[0].url);
+      setForm({ ...form, variation: data.data[0].url });
+    } catch (err) {
+      alert(err);
+    } finally {
+      setGeneratingImg(false);
+    }
+  };
   return (
     <section className="max-w-7xl mx-auto">
       <div>
@@ -132,12 +158,40 @@ const CreatePost = () => {
               </div>
             )}
           </div>
+          <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
+            {form.variation ? (
+              <img
+                src={form.variation}
+                alt={form.prompt}
+                className="w-full h-full object-contain"
+              />
+            ) : (
+              <img
+                src={preview}
+                alt="preview"
+                className="w-9/12 h-9/12 object-contain opacity-40"
+              />
+            )}
+
+            {generatingImg && (
+              <div className="absolute inset-0 z-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] rounded-lg">
+                <Loader />
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="mt-5 flex gap-5">
           <button
             type="button"
             onClick={generateImage}
+            className=" text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+          >
+            {generatingImg ? "Generating..." : "Generate"}
+          </button>
+          <button
+            type="button"
+            onClick={handleVariation}
             className=" text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           >
             {generatingImg ? "Generating..." : "Generate"}
