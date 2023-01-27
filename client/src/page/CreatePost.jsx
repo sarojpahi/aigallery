@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom";
 
 import { preview } from "../assets";
 import { getRandomPrompt } from "../utils";
-import { FormField, Loader } from "../components";
+import { Carousel, FormField, Loader } from "../components";
 
 const CreatePost = () => {
   const navigate = useNavigate();
-
+  const [current, setCurrent] = useState(data[0].url)
   const [form, setForm] = useState({
     name: "",
     prompt: "",
-    photo: "",
+    photo: [],
   });
 
   const [generatingImg, setGeneratingImg] = useState(false);
@@ -37,11 +37,9 @@ const CreatePost = () => {
           body: JSON.stringify({ prompt: form.prompt }),
         });
         const data = await response.json();
-
-        console.log(data);
         setForm({
           ...form,
-          photo: data.data[0].url,
+          photo: data.data,
         });
       } catch (err) {
         alert(err);
@@ -97,7 +95,6 @@ const CreatePost = () => {
         }
       );
       const data = await response.json();
-      console.log(data.data[0].url);
       setForm({ ...form, variation: data.data[0].url });
     } catch (err) {
       alert(err);
@@ -115,8 +112,8 @@ const CreatePost = () => {
         </p>
       </div>
 
-      <form className="mt-16 max-w-3xl" onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-5">
+      <form className="mt-16 w-full" onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-5 w-full">
           <FormField
             labelName="Your Name"
             type="text"
@@ -125,25 +122,32 @@ const CreatePost = () => {
             value={form.name}
             handleChange={handleChange}
           />
-
-          <FormField
-            labelName="Prompt"
-            type="text"
-            name="prompt"
-            placeholder="An Impressionist oil painting of sunflowers in a purple vase…"
-            value={form.prompt}
-            handleChange={handleChange}
-            isSurpriseMe
-            handleSurpriseMe={handleSurpriseMe}
-          />
-
-          <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
-            {form.photo ? (
-              <img
-                src={form.photo}
-                alt={form.prompt}
-                className="w-full h-full object-contain"
+          <div className="flex w-full ">
+            <div className="w-full">
+              <FormField
+                labelName="Prompt"
+                type="text"
+                name="prompt"
+                placeholder="An Impressionist oil painting of sunflowers in a purple vase…"
+                value={form.prompt}
+                handleChange={handleChange}
+                isSurpriseMe
+                handleSurpriseMe={handleSurpriseMe}
               />
+            </div>
+            <div>
+              <button
+                type="button"
+                onClick={generateImage}
+                className=" text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+              >
+                {generatingImg ? "Generating..." : "Generate"}
+              </button>
+            </div>
+          </div>
+          <div className="">
+            {form.photo.length !== 0 ? (
+              <Carousel data={form.photo} {...current, setCurrent} />
             ) : (
               <img
                 src={preview}
@@ -158,7 +162,7 @@ const CreatePost = () => {
               </div>
             )}
           </div>
-          <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
+          {/* <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
             {form.variation ? (
               <img
                 src={form.variation}
@@ -178,17 +182,10 @@ const CreatePost = () => {
                 <Loader />
               </div>
             )}
-          </div>
+          </div> */}
         </div>
 
         <div className="mt-5 flex gap-5">
-          <button
-            type="button"
-            onClick={generateImage}
-            className=" text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-          >
-            {generatingImg ? "Generating..." : "Generate"}
-          </button>
           <button
             type="button"
             onClick={handleVariation}
