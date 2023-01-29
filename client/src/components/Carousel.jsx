@@ -1,6 +1,3 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-
 const Carousel = ({ data, current, setCurrent }) => {
   return (
     <div className="w-full flex justify-center flex-col">
