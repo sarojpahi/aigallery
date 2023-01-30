@@ -1,10 +1,10 @@
 const Carousel = ({ data, current, setCurrent }) => {
   return (
-    <div className="w-full flex justify-center flex-col">
-      <div className="w-[500px]">
+    <div className="w-[450px] flex justify-center items-center flex-col">
+      <div className=" mx-auto">
         <img src={current} alt={"1"} className="w-full h-full object-contain" />
       </div>
-      <div className="flex h-10 w-full mt-2">
+      <div className="flex justify-center h-16 mt-2 ">
         {data?.map((item, i) => (
           <div
             key={i}

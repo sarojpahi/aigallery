@@ -7,7 +7,7 @@ import { Carousel, FormField, Loader } from "../components";
 
 const CreatePost = () => {
   const navigate = useNavigate();
-  const [current, setCurrent] = useState(data[0].url)
+  const [current, setCurrent] = useState([]);
   const [form, setForm] = useState({
     name: "",
     prompt: "",
@@ -41,6 +41,7 @@ const CreatePost = () => {
           ...form,
           photo: data.data,
         });
+        setCurrent(data.data[0].url);
       } catch (err) {
         alert(err);
       } finally {
@@ -104,7 +105,7 @@ const CreatePost = () => {
   };
   return (
     <section className="max-w-7xl mx-auto">
-      <div>
+      <div className="mt-[-24px]">
         <h1 className="font-extrabold text-[#222328] text-[32px]">Create</h1>
         <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">
           Generate an imaginative image through DALL-E AI and share it with the
@@ -112,16 +113,8 @@ const CreatePost = () => {
         </p>
       </div>
 
-      <form className="mt-16 w-full" onSubmit={handleSubmit}>
+      <form className="mt-6 w-full" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-5 w-full">
-          <FormField
-            labelName="Your Name"
-            type="text"
-            name="name"
-            placeholder="Ex., john doe"
-            value={form.name}
-            handleChange={handleChange}
-          />
           <div className="flex w-full ">
             <div className="w-full">
               <FormField
@@ -135,7 +128,7 @@ const CreatePost = () => {
                 handleSurpriseMe={handleSurpriseMe}
               />
             </div>
-            <div>
+            <div className="flex items-end p-1 ml-2">
               <button
                 type="button"
                 onClick={generateImage}
@@ -145,9 +138,13 @@ const CreatePost = () => {
               </button>
             </div>
           </div>
-          <div className="">
+          <div className="w-full flex justify-center">
             {form.photo.length !== 0 ? (
-              <Carousel data={form.photo} {...current, setCurrent} />
+              <Carousel
+                data={form.photo}
+                current={current}
+                setCurrent={setCurrent}
+              />
             ) : (
               <img
                 src={preview}
@@ -196,10 +193,18 @@ const CreatePost = () => {
         </div>
 
         <div className="mt-10">
-          <p className="mt-2 text-[#666e75] text-[14px]">
+          <p className="my-2 text-[#666e75] text-[14px]">
             ** Once you have created the image you want, you can share it with
             others in the community **
           </p>
+          <FormField
+            labelName="Your Name"
+            type="text"
+            name="name"
+            placeholder="Ex., john doe"
+            value={form.name}
+            handleChange={handleChange}
+          />
           <button
             type="submit"
             className="mt-3 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
