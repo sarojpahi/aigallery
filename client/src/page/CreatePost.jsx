@@ -138,7 +138,7 @@ const CreatePost = () => {
               </button>
             </div>
           </div>
-          <div className="w-full flex justify-center">
+          <div className="w-full flex">
             {form.photo.length !== 0 ? (
               <Carousel
                 data={form.photo}
