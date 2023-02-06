@@ -29,13 +29,16 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch("http://localhost:8080/generateImage", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ prompt: form.prompt }),
-        });
+        const response = await fetch(
+          "https://aigallery.onrender.com/generateImage",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ prompt: form.prompt }),
+          }
+        );
         const data = await response.json();
         setForm({
           ...form,
@@ -59,7 +62,7 @@ const CreatePost = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          "http://localhost:8080/generateImage/postImage",
+          "https://aigallery.onrender.com/generateImage/postImage",
           {
             method: "POST",
             headers: {
@@ -91,7 +94,7 @@ const CreatePost = () => {
     try {
       setGeneratingImg(true);
       const response = await fetch(
-        "http://localhost:8080/generateImage/variation",
+        "https://aigallery.onrender.com/generateImage/variation",
         {
           method: "POST",
           headers: {
