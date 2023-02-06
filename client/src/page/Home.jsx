@@ -24,13 +24,7 @@ const Home = () => {
 
     try {
       const response = await fetch(
-        "https://aigallery.onrender.com/api/v1/post",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        "https://aigallery.onrender.com/generateImage/postImage"
       );
 
       if (response.ok) {
