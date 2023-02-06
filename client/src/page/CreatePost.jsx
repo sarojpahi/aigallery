@@ -29,22 +29,19 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch(
-          "https://aigallery.onrender.com/generateImage",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ prompt: form.prompt }),
-          }
-        );
+        const response = await fetch("http://localhost:8080/generateImage", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt: form.prompt }),
+        });
         const data = await response.json();
         setForm({
           ...form,
           photo: data.data,
         });
-        setCurrent(data.data[0].url);
+        setCurrent(data.data[0].b64_json);
       } catch (err) {
         alert(err);
       } finally {
@@ -62,17 +59,22 @@ const CreatePost = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          "https://aigallery.onrender.com/generateImage/postImage",
+          "http://localhost:8080/generateImage/postImage",
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ ...form }),
+            body: JSON.stringify({
+              name: form.name,
+              prompt: form.prompt,
+              photo: current,
+            }),
           }
         );
 
-        await response.json();
+        const data = await response.json();
+        console.log(data);
         alert("Success");
         navigate("/");
       } catch (err) {
@@ -89,17 +91,17 @@ const CreatePost = () => {
     try {
       setGeneratingImg(true);
       const response = await fetch(
-        "https://aigallery.onrender.com/generateImage/variation",
+        "http://localhost:8080/generateImage/variation",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ data: form.photo }),
+          body: JSON.stringify({ photo: current }),
         }
       );
       const data = await response.json();
-      setForm({ ...form, variation: data.data[0].url });
+      setForm({ ...form, variation: data.data[0].b64_json });
     } catch (err) {
       alert(err);
     } finally {
@@ -162,10 +164,10 @@ const CreatePost = () => {
               </div>
             )}
           </div>
-          {/* <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
+          <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
             {form.variation ? (
               <img
-                src={form.variation}
+                src={`data:image/jpeg;base64,${form.variation}`}
                 alt={form.prompt}
                 className="w-full h-full object-contain"
               />
@@ -182,7 +184,7 @@ const CreatePost = () => {
                 <Loader />
               </div>
             )}
-          </div> */}
+          </div>
         </div>
 
         <div className="mt-5 flex gap-5">

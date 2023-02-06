@@ -12,8 +12,10 @@ const generateImage = async (req, res) => {
       prompt,
       n: 4,
       size: "1024x1024",
+      response_format: "b64_json",
     });
     const data = response.data;
+    console.log(response.data);
     res.status(200).send(data);
   } catch (error) {
     if (error.response) {
@@ -29,17 +31,17 @@ const generateImage = async (req, res) => {
   }
 };
 const variation = async (req, res) => {
-  const { data } = req.body;
+  const { photo } = req.body;
   try {
-    const file = await fetch(data);
-    const blob = await file.blob();
-    const arrayBuffer = await blob.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    buffer.name = "image.png";
-    console.log(buffer);
-    const response = await openai.createImageVariation(buffer, 1, "1024x1024");
+    let buff = new Buffer(photo, "base64");
+    buff.name = "image.png";
+    const response = await openai.createImageVariation(
+      buff,
+      1,
+      "1024x1024",
+      "b64_json"
+    );
     res.send(response.data);
-    // console.log(response.data);
   } catch (error) {
     if (error.response) {
       console.log(error.response.status);
@@ -47,6 +49,7 @@ const variation = async (req, res) => {
     } else {
       console.log(error.message);
     }
+    res.send("error");
   }
 };
 module.exports = { generateImage, variation };
