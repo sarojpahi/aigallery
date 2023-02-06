@@ -11,8 +11,6 @@ const postImage = async (req, res) => {
     const photoUrl = await cloudinary.uploader.upload(
       `data:image/jpeg;base64,${photo}`
     );
-
-    console.log(photoUrl);
     const newPost = await Post.create({
       name,
       prompt,
