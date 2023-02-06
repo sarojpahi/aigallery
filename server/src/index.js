@@ -1,9 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const connet = require("../Config/mongoose.config");
-const userRoute = require("../Routes/user.route");
-const ImageRoute = require("../Routes/image.route");
+const connet = require("./Config/mongoose.config");
+const userRoute = require("./Routes/user.route");
+const ImageRoute = require("./Routes/image.route");
 const port = process.env.PORT || 8080;
 const app = express();
 app.use(cors());
