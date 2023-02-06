@@ -1,4 +1,4 @@
-import Post from "../Model/post.model";
+const Post = require("../Model/post.model");
 
 const postImage = async (req, res) => {
   try {
@@ -28,4 +28,4 @@ const getImage = async (req, res) => {
     });
   }
 };
-export { postImage, getImage };
+module.exports = { postImage, getImage };
