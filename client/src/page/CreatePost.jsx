@@ -147,7 +147,7 @@ const CreatePost = () => {
               </button>
             </div>
           </div>
-          <div className="w-full grid lg:grid-cols-3 items-center relative">
+          <div className="w-full grid lg:grid-cols-3 items-center relative min-h-[40vh]">
             {form.photo.length !== 0 ? (
               <Carousel
                 data={form.photo}
