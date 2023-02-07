@@ -22,7 +22,7 @@ It is an AI-driven image generator app based on the DALLE-E bot from OPENAI
 
 > HOME PAGE
 
-![homepage](https://user-images.githubusercontent.com/107534043/217316173-91e695a6-3fa3-40cb-92e9-dad1b095ba67.pngg)
+![homepage](https://user-images.githubusercontent.com/107534043/217316173-91e695a6-3fa3-40cb-92e9-dad1b095ba67.png)
 
 
 > CREATE PAGE
