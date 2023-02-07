@@ -7,13 +7,14 @@ import { Carousel, FormField, Loader } from "../components";
 
 const CreatePost = () => {
   const navigate = useNavigate();
-  const [current, setCurrent] = useState([]);
+  const [current, setCurrent] = useState("");
   const [form, setForm] = useState({
     name: "",
     prompt: "",
     photo: [],
+    variation: "",
   });
-
+  const [load, setLoad] = useState(false);
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -43,6 +44,7 @@ const CreatePost = () => {
         setForm({
           ...form,
           photo: data.data,
+          variation: "",
         });
         setCurrent(data.data[0].b64_json);
       } catch (err) {
@@ -71,7 +73,7 @@ const CreatePost = () => {
             body: JSON.stringify({
               name: form.name,
               prompt: form.prompt,
-              photo: current,
+              photo: form.variation || current,
             }),
           }
         );
@@ -90,9 +92,8 @@ const CreatePost = () => {
     }
   };
   const handleVariation = async () => {
-    console.log(form.variation);
     try {
-      setGeneratingImg(true);
+      setLoad(true);
       const response = await fetch(
         "https://aigallery.onrender.com/generateImage/variation",
         {
@@ -108,7 +109,7 @@ const CreatePost = () => {
     } catch (err) {
       alert(err);
     } finally {
-      setGeneratingImg(false);
+      setLoad(false);
     }
   };
   return (
@@ -146,7 +147,7 @@ const CreatePost = () => {
               </button>
             </div>
           </div>
-          <div className="w-full flex">
+          <div className="w-full grid lg:grid-cols-3 items-center relative">
             {form.photo.length !== 0 ? (
               <Carousel
                 data={form.photo}
@@ -154,11 +155,7 @@ const CreatePost = () => {
                 setCurrent={setCurrent}
               />
             ) : (
-              <img
-                src={preview}
-                alt="preview"
-                className="w-9/12 h-9/12 object-contain opacity-40"
-              />
+              ""
             )}
 
             {generatingImg && (
@@ -166,38 +163,37 @@ const CreatePost = () => {
                 <Loader />
               </div>
             )}
-          </div>
-          <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
-            {form.variation ? (
-              <img
-                src={`data:image/jpeg;base64,${form.variation}`}
-                alt={form.prompt}
-                className="w-full h-full object-contain"
-              />
+
+            {current ? (
+              <div className="my-5 relative  lg:translate-x-[35%]">
+                <button
+                  type="button"
+                  onClick={handleVariation}
+                  className=" text-white bg-black font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                >
+                  {load ? "Generating..." : "Variation"}
+                </button>
+              </div>
             ) : (
-              <img
-                src={preview}
-                alt="preview"
-                className="w-9/12 h-9/12 object-contain opacity-40"
-              />
+              ""
             )}
-
+            {form.variation ? (
+              <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3 lg:w-full flex justify-center items-center">
+                <img
+                  src={`data:image/jpeg;base64,${form.variation}`}
+                  alt={form.prompt}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            ) : (
+              ""
+            )}
             {generatingImg && (
               <div className="absolute inset-0 z-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] rounded-lg">
                 <Loader />
               </div>
             )}
           </div>
-        </div>
-
-        <div className="mt-5 flex gap-5">
-          <button
-            type="button"
-            onClick={handleVariation}
-            className=" text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-          >
-            {generatingImg ? "Generating..." : "Generate"}
-          </button>
         </div>
 
         <div className="mt-10">
