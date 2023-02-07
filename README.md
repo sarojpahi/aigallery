@@ -1,27 +1,35 @@
-# Next.js + Tailwind CSS Example
+# AI Gallery.
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.2)](https://tailwindcss.com/blog/tailwindcss-v3-2) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+##### Check out original website
+<https://openai.com/dall-e-2/>
 
-## Deploy your own
+It is an AI-driven image generator app based on the DALLE-E bot from OPENAI
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+# Prerequisities
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+- React
+- OpenAi
+- TailwindCSS
+- JavaScript
+- MongoDB
+- Cloudinary
+- NodeJS
+- Express
 
-## How to use
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
 
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-```
+# Sceenshots
 
-```bash
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-```
+> HOME PAGE
 
-```bash
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
-```
+![homepage](https://user-images.githubusercontent.com/107534043/217316173-91e695a6-3fa3-40cb-92e9-dad1b095ba67.pngg)
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+
+> CREATE PAGE
+
+![create](https://user-images.githubusercontent.com/107534043/217315512-ab723831-125b-4945-ad91-87ca03501de9.png)
+![variation](https://user-images.githubusercontent.com/107534043/217315516-7d99ccc7-7eeb-4c93-926f-0b084e0714fe.png)
+
+
+- How to work with React and TailwindCSS in the frontend
+- How to work with Node, Express,OpenAi Dalle 2 and MongoDB in the backend to create own api for the functioning of the app.
